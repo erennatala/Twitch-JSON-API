@@ -9,22 +9,41 @@
         align-items: center;
         height: 100vh;
         font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
       }
 
       img {
         width: 200px;
         margin-bottom: 20px;
+        transition: transform 2s;
       }
 
       #streamer-status {
-        font-size: 24px;
+        font-size: 30px;
         color: #333;
+      }
+
+      .streaming {
+        transform: scale(1.2) rotate(20deg);
+      }
+
+      #streamer-link {
+        display: none;
+        font-size: 20px;
+        color: #0066cc;
+        text-decoration: none;
+        margin-bottom: 50px; /* Add vertical padding */
+      }
+
+      #streamer-link:hover {
+        text-decoration: underline;
       }
     </style>
   </head>
   <body>
     <div>
-      <img id="avocado" src="path/to/avocado.jpg" style="display: none;">
+      <a id="streamer-link" href="https://www.twitch.tv/iselyt" target="_blank">iselyt is online on Twitch!</a>
+      <img id="avocado" src="https://img.freepik.com/premium-vector/cute-avocado-character_92289-1860.jpg?w=2000">
       <p id="streamer-status"></p>
     </div>
 
@@ -36,15 +55,23 @@
         .then(streamData => {
           var streaming = streamData.data && streamData.data.length > 0;
           var streamerStatus = document.getElementById('streamer-status');
+          var streamerLink = document.getElementById('streamer-link');
+          var avocadoImage = document.getElementById('avocado');
           if(streaming) {
-            // Show the avocado picture and confetti
-            document.getElementById('avocado').style.display = 'block';
-            confetti.start();
+            // Show the avocado picture, confetti and streamer link
+            avocadoImage.classList.add('streaming');
+            streamerLink.style.display = 'block';
+            if(window.confetti) {  // Check if confetti is defined before attempting to start it
+              confetti.start();
+            }
             streamerStatus.textContent = 'iselyt is currently LIVE!';
           } else {
-            // Hide the avocado picture and stop the confetti
-            document.getElementById('avocado').style.display = 'none';
-            confetti.stop();
+            // Hide the avocado picture, stop the confetti and hide the streamer link
+            avocadoImage.classList.remove('streaming');
+            streamerLink.style.display = 'none';
+            if(window.confetti) {  // Check if confetti is defined before attempting to stop it
+              confetti.stop();
+            }
             streamerStatus.textContent = 'iselyt is currently OFFLINE.';
           }
         });
