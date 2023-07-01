@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Twitch Streamer Status</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+      }
+
+      img {
+        width: 200px;
+        margin-bottom: 20px;
+      }
+
+      #streamer-status {
+        font-size: 24px;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <img id="avocado" src="path/to/avocado.jpg" style="display: none;">
+      <p id="streamer-status"></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/gh/mathusummut/confetti.js/confetti.min.js"></script>
+    <script>
+      // Fetch data from Twitch API for the streamer 'iselyt'
+      fetch('https://twitch-proxy.freecodecamp.rocks/helix/streams?user_login=iselyt')
+        .then(response => response.json())
+        .then(streamData => {
+          var streaming = streamData.data && streamData.data.length > 0;
+          var streamerStatus = document.getElementById('streamer-status');
+          if(streaming) {
+            // Show the avocado picture and confetti
+            document.getElementById('avocado').style.display = 'block';
+            confetti.start();
+            streamerStatus.textContent = 'iselyt is currently LIVE!';
+          } else {
+            // Hide the avocado picture and stop the confetti
+            document.getElementById('avocado').style.display = 'none';
+            confetti.stop();
+            streamerStatus.textContent = 'iselyt is currently OFFLINE.';
+          }
+        });
+    </script>
+  </body>
+</html>
